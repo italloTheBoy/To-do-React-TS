@@ -1,0 +1,13 @@
+.footer {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--black1);
+  color: var(--white)
+}
+
+.footer > p > span {
+  font-weight: bold;
+  color: var(--blue1);
+}
