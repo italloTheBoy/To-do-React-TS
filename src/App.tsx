@@ -1,11 +1,11 @@
-import { useState } from 'react'
-
 import styles from './App.module.css'
 
 import { Header } from './components/Header'
 import { Footer } from './components/Footer'
 import { Form } from './components/Form'
 import { List } from './components/List'
+
+import { ITask } from './interfaces/Task'
 
 function App() {
 
