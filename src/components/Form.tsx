@@ -1,15 +1,17 @@
-import { FormEvent, ChangeEvent, useState, useEffect } from "react"
+import { FormEvent, ChangeEvent, Dispatch, useState, useEffect } from "react"
+import * as React from "react"
 import styles from "./Form.module.css" 
 import { ITask } from '../interfaces/Task'
 
 
 export interface IFormProps {
   btnTxt: string;
+  tasks: ITask[];
+  setTasks?: React.Dispatch<React.SetStateAction<ITask[]>>
 }
 
 
-export function Form ({btnTxt}: IFormProps) {
-  const [tasks, setTasks] = useState<ITask[]>([]) 
+export function Form ({btnTxt, tasks, setTasks}: IFormProps) {
   const [id, setId] = useState<number>(1)
   const [title, setTitle] = useState<string>('')
   const [difficulty, setDifficulty] = useState<number>(0)
@@ -22,14 +24,16 @@ export function Form ({btnTxt}: IFormProps) {
     const newTask: ITask = {
       id: id,
       title: title,
-      difficulty: difficulty
+      difficulty: isNaN(difficulty) ? 0 : difficulty
     }
 
-    setTasks([...tasks, newTask])
+    setTasks!([...tasks, newTask])
+
+    setTitle('')
+    setDifficulty(0)
   }
 
   function handleChange (event: ChangeEvent<HTMLInputElement>) {
-    console.log(tasks)
     if (event.target.name === 'title') {
       setTitle(event.target.value)
     }
@@ -47,6 +51,7 @@ export function Form ({btnTxt}: IFormProps) {
           name="title" 
           placeholder="Nome da tarefa" 
           onChange={handleChange} 
+          value={title}
         />
       </div>    
 
@@ -57,6 +62,7 @@ export function Form ({btnTxt}: IFormProps) {
           name="difficulty" 
           placeholder="Difuculdade da tarefa" 
           onChange={handleChange} 
+          value={difficulty}
         />
       </div>  
 
