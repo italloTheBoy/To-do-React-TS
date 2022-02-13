@@ -1,4 +1,4 @@
-import { FormEvent, ChangeEvent, Dispatch, useState, useEffect } from "react"
+import { FormEvent, ChangeEvent, useState, useEffect } from "react"
 import * as React from "react"
 import styles from "./Form.module.css" 
 import { ITask } from '../interfaces/Task'
@@ -6,31 +6,46 @@ import { ITask } from '../interfaces/Task'
 
 export interface IFormProps {
   btnTxt: string;
+  task?: ITask | null
   tasks: ITask[];
   setTasks?: React.Dispatch<React.SetStateAction<ITask[]>>
+  handleUpdate? (task: ITask): void
 }
 
 
-export function Form ({btnTxt, tasks, setTasks}: IFormProps) {
+export function Form ({btnTxt, task, tasks, setTasks, handleUpdate}: IFormProps) {
   const [id, setId] = useState<number>(1)
   const [title, setTitle] = useState<string>('')
   const [difficulty, setDifficulty] = useState<number>(0)
 
+  useEffect(() => {
+    if (task) {
+      setId(task.id)
+      setTitle(task.title)
+      setDifficulty(task.difficulty)
+    }
+  }, [task])
+
   async function handleSubmit (event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    setId(id + 1)
-
-    const newTask: ITask = {
-      id: id,
-      title: title,
-      difficulty: isNaN(difficulty) ? 0 : difficulty
+    if (!handleUpdate) {
+      setId(Math.floor(Math.random() * 1000))
+  
+      const newTask: ITask = {
+        id: id,
+        title: title,
+        difficulty: isNaN(difficulty) ? 0 : difficulty
+      }
+  
+      setTasks!([...tasks, newTask])
+  
+      setTitle('')
+      setDifficulty(0)
+    } 
+    else {
+      handleUpdate({id, title, difficulty})
     }
-
-    setTasks!([...tasks, newTask])
-
-    setTitle('')
-    setDifficulty(0)
   }
 
   function handleChange (event: ChangeEvent<HTMLInputElement>) {

@@ -4,9 +4,10 @@ import styles from './List.module.css'
 export interface IListProps {
   tasks: ITask[];
   handleDelete(id: number): void
+  handleEdit(task: ITask): void
 }
 
-export function List ({tasks, handleDelete}: IListProps) {
+export function List ({tasks, handleDelete, handleEdit}: IListProps) {
   return (
     <>
       {tasks.map(task => (
@@ -17,7 +18,7 @@ export function List ({tasks, handleDelete}: IListProps) {
           </div>
 
           <nav>
-            <i className="bi bi-pencil"></i>
+            <i onClick={() => handleEdit(task)} className="bi bi-pencil"></i>
             <i onClick={() => handleDelete(task.id)} className="bi bi-trash"></i>
           </nav>
         </article>
